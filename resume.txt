@@ -1,0 +1,91 @@
+# John Doe
+
+Email: [john.doe@gmail.com](mailto:john.doe@gmail.com)
+Phone: +1 234 567 8901
+Location: New York, USA
+LinkedIn: linkedin.com/in/johndoe
+GitHub: github.com/johndoe
+
+## Professional Summary
+
+Aspiring Machine Learning Engineer with experience in Python, Data Analysis, Machine Learning, and Deep Learning. Passionate about building AI-powered applications and solving real-world business problems using data-driven solutions.
+
+## Education
+
+Bachelor of Technology in Computer Science
+XYZ University
+2021 - 2025
+
+CGPA: 8.5/10
+
+## Technical Skills
+
+### Programming Languages
+
+* Python
+* SQL
+* Java
+
+### Machine Learning
+
+* Scikit-Learn
+* TensorFlow
+* Keras
+* Pandas
+* NumPy
+
+### Data Visualization
+
+* Matplotlib
+* Seaborn
+* Power BI
+
+### Databases
+
+* MySQL
+* PostgreSQL
+
+### Tools
+
+* Git
+* GitHub
+* Jupyter Notebook
+* VS Code
+
+## Projects
+
+### Customer Churn Prediction
+
+* Built a machine learning model to predict customer churn.
+* Performed data cleaning and feature engineering.
+* Achieved 87% prediction accuracy.
+
+### Sentiment Analysis System
+
+* Developed an NLP-based sentiment analysis application.
+* Used TensorFlow and Keras for model training.
+* Classified customer reviews into positive, negative, and neutral categories.
+
+### PDF Chatbot using RAG
+
+* Built a chatbot that answers questions from uploaded PDF documents.
+* Used LangChain, Gemini Embeddings, FAISS, and Streamlit.
+* Implemented Retrieval-Augmented Generation (RAG).
+
+## Certifications
+
+* Machine Learning Specialization
+* Deep Learning Fundamentals
+* Python for Data Science
+
+## Soft Skills
+
+* Problem Solving
+* Communication
+* Team Collaboration
+* Critical Thinking
+
+## Languages
+
+* English
+* Hindi
