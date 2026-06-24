@@ -3,6 +3,44 @@ import os
 import tempfile
 from langchain_community.document_loaders import PyPDFLoader
 
-import streamlit as st
-
 st.title("Resume Analyzer")
+
+
+uploaded_file=st.file_uploader(
+    "upload resume",
+    type=['pdf']
+)
+
+if uploaded_file is not None:
+
+    st.success(f"uploaded:{uploaded_file.name}")
+
+    with tempfile.NamedTemporaryFile(
+        delete=False,
+        suffix='.pdf' 
+    ) as temp_file:
+        
+        temp_file.write(uploaded_file.read())
+
+        temp_path=temp_file.name
+
+    loader=PyPDFLoader(temp_path)    
+
+    documents=loader.load()
+
+    resume_text=""
+
+    for doc in documents:
+        resume_text=resume_text+doc.page_content + "\n"
+
+    st.subheader("Extracted resume text")
+
+    st.text_area(
+        "resume content",
+        resume_text,
+        height=400
+    )
+
+    os.remove(temp_path)
+
+    
