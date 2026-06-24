@@ -2,10 +2,13 @@ import streamlit as st
 import os
 import tempfile
 from langchain_community.document_loaders import PyPDFLoader
+from utils import extract_skills
+
+
 
 st.title("Resume Analyzer")
 
-
+# Resume upload & Text extraction
 uploaded_file=st.file_uploader(
     "upload resume",
     type=['pdf']
@@ -43,4 +46,12 @@ if uploaded_file is not None:
 
     os.remove(temp_path)
 
-    
+    # skills
+
+    st.subheader("Detected skills")
+        
+    skills=extract_skills(resume_text)
+
+
+    for skill in skills:
+        st.write("✅", skill)
