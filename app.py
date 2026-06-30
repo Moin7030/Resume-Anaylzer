@@ -2,10 +2,24 @@ import streamlit as st
 import os
 import tempfile
 from langchain_community.document_loaders import PyPDFLoader
+from langchain_groq import ChatGroq
 from utils import extract_skills
-from utils import(extract_skills,analyzer_skill_gap,calculate_match_score)
+from utils import(extract_skills,analyzer_skill_gap,calculate_match_score,
+                  analyze_resume)
+from dotenv import load_dotenv
+load_dotenv()
+from llm import get_llm
+llm=get_llm()
 
-
+api_key = os.getenv("GROQ_API_KEY")
+if not api_key:
+    st.error("Groq API key not found")
+    st.stop()
+llm = ChatGroq(
+    model="llama-3.3-70b-versatile",
+    temperature=0,
+    api_key=api_key
+) 
 
 st.title("Resume Analyzer")
 
@@ -101,4 +115,10 @@ if uploaded_file is not None:
         "Resume Match %",
         f"{score}%"
     )
+
+    # AI Resume Review
      
+    analysis=analyze_resume(llm,resume_text,job_description)
+
+    st.subheader("AI Resume Review")
+    st.write(analysis)

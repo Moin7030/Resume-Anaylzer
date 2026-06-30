@@ -63,3 +63,27 @@ def calculate_match_score(
         len(matched_skills)/len(required_skills))*100
     
     return round(score,2)
+
+# LLM function
+
+from langchain_core.prompts import PromptTemplate
+from prompts import ANALYSIS_PROMPT
+
+def analyze_resume(llm,resume_text,job_description):
+    prompt=PromptTemplate.from_template(
+        ANALYSIS_PROMPT
+    )
+
+    chain=prompt| llm
+
+    try:
+
+        response=chain.invoke({
+            "resume":resume_text,
+            "job_description":job_description
+        })
+
+        return response.content
+    except Exception as e:
+         return f"LLM error:{str(e)}"
+
