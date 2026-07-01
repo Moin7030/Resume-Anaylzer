@@ -87,3 +87,57 @@ def analyze_resume(llm,resume_text,job_description):
     except Exception as e:
          return f"LLM error:{str(e)}"
 
+
+
+import re
+
+SECTION_HEADERS = {
+
+    "education": [
+        "education",
+        "academic background",
+        "qualification"
+    ],
+
+    "experience": [
+        "experience",
+        "work experience",
+        "employment"
+    ],
+
+    "projects": [
+        "projects",
+        "project"
+    ],
+
+    "skills": [
+        "skills",
+        "technical skills"
+    ],
+
+    "certifications": [
+        "certifications",
+        "certificates"
+    ]
+
+}
+
+def parse_resume_sections(resume_text):
+
+    sections = {
+        "education": "",
+        "experience": "",
+        "projects": "",
+        "skills": "",
+        "certifications": "",
+        "others": ""
+    }
+
+    return sections
+
+    lines=resume_text.split("\n")
+
+    current_section='others'
+
+    for line in lines:
+         line=line.strip().lower()
