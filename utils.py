@@ -144,9 +144,16 @@ def parse_resume_sections(resume_text):
         match_section=None
 
         for section_name,keywords in SECTION_HEADERS.items():
-            if clean_line in keywords:
-                match_section=section_name
-                break
+            for keyword in keywords:
+                pattern=r"^\s*"+re.escape(keyword)+r"\s*:?\s*$"
+                if re.match(pattern,clean_line):
+                     
+                    match_section=section_name
+                    break
+            if match_section:
+                     break
+                
+                
 
         if match_section:
                  current_section=match_section
@@ -188,3 +195,27 @@ def extract_contact_info(text):
           "github":extract_github(text),
           "linkedin":extract_linkedin(text)
      }
+
+
+def build_candidate_profile(resume_text):
+    section=parse_resume_sections(resume_text)
+    contact=extract_contact_info(resume_text)
+    SKILLS=extract_skills(resume_text)
+
+    candidate={
+          "name":None,
+          "email":contact.get('email'),
+          'phone':contact.get('phone'),
+          'github':contact.get('github'),
+          'linkedin':contact.get('linkedin'),
+          'education':section.get('education',""),
+          'experience':section.get('experience',''),
+          'project':section.get('projects',''),
+          'skills':SKILLS,
+          'certification':section.get('certification','')
+
+
+    }
+    
+    return candidate
+

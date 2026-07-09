@@ -8,3 +8,8 @@ from utils import parse_resume_sections
 
 text = open("resume.txt").read()
 print(parse_resume_sections(text))
+
+
+text = open("resume.txt").read()
+print(parse_resume_sections(text))
+print(extract_contact_info(text))

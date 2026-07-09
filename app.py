@@ -3,23 +3,21 @@ import os
 import tempfile
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_groq import ChatGroq
-from utils import extract_skills
+
 from utils import(extract_skills,analyzer_skill_gap,calculate_match_score,
-                  analyze_resume,extract_contact_info)
+                  analyze_resume,build_candidate_profile,extract_contact_info)
 from dotenv import load_dotenv
 load_dotenv()
 from llm import get_llm
-llm=get_llm()
 
+# ✅ Step 3 — check API key first
 api_key = os.getenv("GROQ_API_KEY")
 if not api_key:
     st.error("Groq API key not found")
     st.stop()
-llm = ChatGroq(
-    model="llama-3.3-70b-versatile",
-    temperature=0,
-    api_key=api_key
-) 
+
+# ✅ Step 4 — create LLM once, after key is confirmed
+llm = get_llm()
 
 st.title("Resume Analyzer")
 
@@ -122,3 +120,30 @@ if uploaded_file is not None:
 
     st.subheader("AI Resume Review")
     st.write(analysis)
+
+
+# After resume_text is ready
+    candidate=build_candidate_profile(resume_text)
+    contact_info=candidate
+    st.subheader("Contact Information")
+
+    if contact_info['email']:
+        st.write('Email:',contact_info['email'])
+    else:
+        st.warning("Email not found")
+
+    if contact_info['phone']:
+        st.write("Phone:",contact_info['phone'])
+    else:
+        st.warning("Phone not found")
+
+    if contact_info['github']:
+        st.write("Github:",contact_info['github'])
+    else:
+        st.write("Github not found")
+
+    if contact_info['linkedin']:
+        st.write('linkedin',contact_info['linkedin'])
+
+    else:
+        st.warning('linkedin not found')                            
