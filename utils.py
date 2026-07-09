@@ -133,11 +133,58 @@ def parse_resume_sections(resume_text):
         "others": ""
     }
 
-    return sections
+    
 
     lines=resume_text.split("\n")
 
     current_section='others'
 
     for line in lines:
-         line=line.strip().lower()
+        clean_line=line.strip().lower()
+        match_section=None
+
+        for section_name,keywords in SECTION_HEADERS.items():
+            if clean_line in keywords:
+                match_section=section_name
+                break
+
+        if match_section:
+                 current_section=match_section
+                 continue
+            
+        sections[current_section]+=line+'\n'
+             
+
+    return sections     
+
+
+
+def extract_email(text):
+     pattern=r"[a-zA-Z0._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
+     match=re.search(pattern,text)
+     return match.group() if match else None
+
+
+def extract_phone(text):
+     pattern=r"(\+91[\-\s]?[6-9]\d{9})"
+     match=re.search(pattern,text)
+     return match.group() if match else None
+
+def extract_github(text):
+     pattern=r"(https?:\/\/)?(www\.)?github\.com\/[A-Za-z0-9_-]+"
+     match=re.search(pattern,text)
+     return match.group() if match else None
+
+def extract_linkedin(text):
+     pattern=r"(https?:\/\/)?(www\.)?linkedin\.com\/in\/[A-Za-z0-9_-]+"
+     match=re.search(pattern,text)
+     return match.group() if match else None
+
+
+def extract_contact_info(text):
+     return {
+          "email":extract_email(text),
+          "phone":extract_phone(text),
+          "github":extract_github(text),
+          "linkedin":extract_linkedin(text)
+     }

@@ -5,7 +5,7 @@ from langchain_community.document_loaders import PyPDFLoader
 from langchain_groq import ChatGroq
 from utils import extract_skills
 from utils import(extract_skills,analyzer_skill_gap,calculate_match_score,
-                  analyze_resume)
+                  analyze_resume,extract_contact_info)
 from dotenv import load_dotenv
 load_dotenv()
 from llm import get_llm
