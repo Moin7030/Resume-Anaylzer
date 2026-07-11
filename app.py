@@ -147,3 +147,94 @@ if uploaded_file is not None:
 
     else:
         st.warning('linkedin not found')                            
+
+    # Build candidate profile — ONE call does everything
+candidate = build_candidate_profile(resume_text)
+
+# ── Contact Information ──────────────────────────
+st.subheader("📋 Contact Information")
+
+if candidate["email"]:
+    st.write("📧 Email:", candidate["email"])
+else:
+    st.warning("⚠️ Email not found")
+
+if candidate["phone"]:
+    st.write("📱 Phone:", candidate["phone"])
+else:
+    st.warning("⚠️ Phone not found")
+
+if candidate["github"]:
+    st.write("💻 GitHub:", candidate["github"])
+else:
+    st.warning("⚠️ GitHub not found")
+
+if candidate["linkedin"]:
+    st.write("🔗 LinkedIn:", candidate["linkedin"])
+else:
+    st.warning("⚠️ LinkedIn not found")
+
+# ── Education Details (NEW in Day 12) ───────────
+st.subheader("🎓 Education Details")
+
+education = candidate["education"]
+
+if education["degree"]:
+    st.write("📜 Degree:", ", ".join(education["degree"]))
+else:
+    st.warning("⚠️ Degree not found")
+
+if education["university"]:
+    st.write("🏫 University:", education["university"])
+else:
+    st.warning("⚠️ University not found")
+
+if education["graduation_year"]:
+    st.write("📅 Graduation Year:", ", ".join(education["graduation_year"]))
+else:
+    st.warning("⚠️ Graduation year not found")
+
+# ── Experience Details (NEW in Day 12) ──────────
+st.subheader("💼 Experience Details")
+
+experience = candidate["experience"]
+
+if experience["company"]:
+    st.write("🏢 Company:", experience["company"])
+else:
+    st.warning("⚠️ Company not found")
+
+if experience["role"]:
+    st.write("👔 Role:", experience["role"])
+else:
+    st.warning("⚠️ Role not found")
+
+if experience["duration"]:
+    st.write("📅 Duration:", " - ".join(experience["duration"]))
+else:
+    st.warning("⚠️ Duration not found")
+
+# ── Project Details (NEW in Day 12) ─────────────
+st.subheader("📁 Project Details")
+
+projects = candidate["projects"]
+
+if projects["title"]:
+    st.write("📌 Title:", projects["title"])
+else:
+    st.warning("⚠️ Project title not found")
+
+if projects["description"]:
+    st.write("📝 Description:", projects["description"])
+else:
+    st.warning("⚠️ Description not found")
+
+if projects["technologies"]:
+    st.write("🛠️ Technologies:", ", ".join(projects["technologies"]))
+else:
+    st.warning("⚠️ Technologies not found")
+
+# ── Skills ───────────────────────────────────────
+st.subheader("🛠️ Detected Skills")
+for skill in candidate["skills"]:
+    st.write("✅", skill)    

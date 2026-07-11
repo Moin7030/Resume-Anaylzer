@@ -208,9 +208,9 @@ def build_candidate_profile(resume_text):
           'phone':contact.get('phone'),
           'github':contact.get('github'),
           'linkedin':contact.get('linkedin'),
-          'education':section.get('education',""),
-          'experience':section.get('experience',''),
-          'project':section.get('projects',''),
+          'education':extract_education_details(section.get('education',"")),
+          'experience':extract_experience_details(section.get('experience','')),
+          'project':extract_project_details(section.get('projects','')),
           'skills':SKILLS,
           'certification':section.get('certification','')
 
@@ -218,4 +218,81 @@ def build_candidate_profile(resume_text):
     }
     
     return candidate
+
+Degree_keyword=[
+       "b.tech", "btech", "b.e", "be",
+    "m.tech", "mtech", "bca", "mca",
+    "b.sc", "m.sc", "mba", "phd"
+]
+
+role_keywords=[
+     "intern", "developer", "engineer", "analyst", "manager", "researcher"
+]
+
+def extract_year(text):
+     pattern=r"\b(19|20)\d{2}\b"
+     return re.findall(r"\b(?:19|20)\d{2}\b",text)
+
+def extract_degree(text):
+    text_lower=text.lower()
+    found=[]
+    for degree in Degree_keyword:
+        pattern =r'\b'+re.escape(degree)+'r\b'
+        if re.search(pattern,text_lower):
+            found.append(degree)
+    return found
+
+def extract_university(text):
+    pattern=r"([A-Z][A-Za-z&,\s]*?(University|Institute|College))"
+    match=re.search(pattern,text)
+    return match.group().strip() if match else None
+
+
+def extract_company(text):
+    pattern=r"([A-Z][A-Za-z&]*\s?){1,3}(Pvt\.?\s?Ltd\.?|Technologies|Solutions|Systems|Inc\.?|LLP)"
+    match=re.search(pattern,text)
+    return match.group().strip() if match else None
+
+def extract_role(text):
+    text_lower=text.lower()
+    for role in role_keywords:
+        if role in text_lower:
+            return role
+    return None
+
+def extract_education_details(education_text):
+    return{
+        "Degree":extract_degree(education_text),
+        "university":extract_university(education_text),
+        "Graduation_year":extract_year(education_text)
+    }    
+
+def extract_experience_details(experience_text):
+    return{
+        "Company":extract_company(experience_text),
+        "University":extract_university(experience_text),
+        "Graduation_year":extract_year(experience_text)
+    }
+
+def extract_experience_details(experience_text):
+    return{
+        "Company":extract_company(experience_text),
+        "Role":extract_role(experience_text),
+        "Duration":extract_year(experience_text)
+    } 
+
+def extract_project_details(projects_text):
+    lines=[line.strip() for line in projects_text.split("\n") if line.strip()]
+    return{
+        "title":lines[0] if lines else None,
+        "Description":"".join(lines[1:]) if len(lines)>1 else "",
+        "Technologies":extract_skills(projects_text)
+    }
+
+     
+          
+
+
+        
+
 
