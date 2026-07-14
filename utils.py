@@ -1,6 +1,7 @@
 import re
 from langchain_core.prompts import PromptTemplate
 from prompts import ANALYSIS_PROMPT
+from sentence_transformers import util as st_util
 
 # ── Constants ───────────────────────────────────
 SKILLS = [
@@ -185,6 +186,51 @@ def extract_project_details(projects_text):
         "technologies": extract_skills(projects_text)
     }
 
+
+          
+# day 13--Embedding work-----
+
+def get_embedding(text,model):
+    return model.encode(text,convert_to_tensor=True)
+
+def compute_similarity(text1,text2,model):
+    embedding1=get_embedding(text1,model)
+    embedding2=get_embedding(text2,model)
+    similarity_score=st_util.cos_sim(embedding1,embedding2)
+    return float(similarity_score[0][0])
+
+        
+# day 14-----Semantic skills
+
+
+
+def semantic_skill_match(candidate_skills,required_skills,model,threshold=0.5):
+    matched=[]
+    missing=[]
+
+    for req_skill in required_skills:
+        best_score=0
+        best_match=None
+
+        for cand_skill in candidate_skills:
+            score=compute_similarity(cand_skill,req_skill,model)
+            if score>best_score:
+                best_score=score
+                best_match=cand_skill
+
+        if best_score>=threshold:
+            matched.append({
+                "required":req_skill,
+                "matched_with":best_match,
+                'score':round(best_score,2)
+            })
+        else:
+            missing.append(req_skill)
+    return{
+    'matched':matched,
+    'missing':missing
+}                            
+
 # ✅ Moved to bottom, all correct key names
 def build_candidate_profile(resume_text):
     sections = parse_resume_sections(resume_text)
@@ -205,9 +251,3 @@ def build_candidate_profile(resume_text):
     }
 
     return candidate
-          
-
-
-        
-
-

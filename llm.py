@@ -2,6 +2,7 @@ from groq import Groq
 import os
 from dotenv import load_dotenv
 from langchain_groq import ChatGroq
+from sentence_transformers import SentenceTransformer
 
 
 load_dotenv()
@@ -17,4 +18,12 @@ def get_llm():
         temperature=0,
         api_key=api_key
     )
+_embedding_model=None
+
+def get_embedding_model():
+    global _embedding_model
+    if _embedding_model is None:
+        _embedding_model=SentenceTransformer('all-MiniLM-L6-v2')
+    return _embedding_model
+    
 

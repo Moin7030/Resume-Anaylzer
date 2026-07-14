@@ -3,6 +3,7 @@ import os
 import tempfile
 from langchain_community.document_loaders import PyPDFLoader
 from dotenv import load_dotenv
+from llm import get_llm,get_embedding_model
 
 # ✅ Bug fixed — clean single import, no duplicates
 from utils import (
@@ -10,7 +11,9 @@ from utils import (
     analyzer_skill_gap,
     calculate_match_score,
     analyze_resume,
-    build_candidate_profile
+    build_candidate_profile,
+    compute_similarity,
+    semantic_skill_match
 )
 from llm import get_llm
 
@@ -167,3 +170,13 @@ if uploaded_file is not None:
     analysis = analyze_resume(llm, resume_text, job_description)
     st.subheader("🤖 AI Resume Review")
     st.write(analysis)
+
+    result=semantic_skill_match(
+        candidate_skills=candidate['skills'],
+        required_skills=jd_skills,
+        model=get_embedding_model(),
+        threshold=0.5
+    )
+
+    st.write("Matched Skills:",result['matched'])
+    st.write("Missing Skills:",result['missing'])
