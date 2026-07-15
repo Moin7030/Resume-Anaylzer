@@ -232,7 +232,7 @@ def semantic_skill_match(candidate_skills,required_skills,model,threshold=0.5):
 } 
 
 def build_project_text(project_details):
-    title=project_details.get('title') or "",
+    title=project_details.get('title') or ""
     description=project_details.get('description') or ""
     technologies=''.join(project_details.get('technologies',[]))
     return f"{title}.{description}.{technologies}"
@@ -272,3 +272,4 @@ def build_candidate_profile(resume_text):
     }
 
     return candidate
+
