@@ -229,7 +229,28 @@ def semantic_skill_match(candidate_skills,required_skills,model,threshold=0.5):
     return{
     'matched':matched,
     'missing':missing
-}                            
+} 
+
+def build_project_text(project_details):
+    title=project_details.get('title') or "",
+    description=project_details.get('description') or ""
+    technologies=''.join(project_details.get('technologies',[]))
+    return f"{title}.{description}.{technologies}"
+
+def match_project_to_job(project_details,job_description,model):
+    project_text=build_project_text(project_details)
+    score=compute_similarity(project_text,job_description,model)
+    return{
+        'project_title':project_details.get('title'),
+        'relevance_score':round(score,2)
+    }
+
+def match_all_project(project_list,job_description,model):
+    result=[]
+    for project in project_list:
+        result.append(match_all_project(project,job_description,model))
+    return results
+    
 
 # ✅ Moved to bottom, all correct key names
 def build_candidate_profile(resume_text):

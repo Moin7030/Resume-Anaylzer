@@ -13,7 +13,8 @@ from utils import (
     analyze_resume,
     build_candidate_profile,
     compute_similarity,
-    semantic_skill_match
+    semantic_skill_match,
+    match_project_to_job
 )
 from llm import get_llm
 
@@ -180,3 +181,25 @@ if uploaded_file is not None:
 
     st.write("Matched Skills:",result['matched'])
     st.write("Missing Skills:",result['missing'])
+
+   # ── Project Relevance ─────────────────────────
+    st.subheader("📁 Project Relevance")
+
+    project_match = match_projects_to_job(
+        project_details=candidate["projects"],
+        job_description=job_description,
+        model=embedding_model
+    )
+
+    if project_match["project_title"]:
+        st.write("📌 Project:", project_match["project_title"])
+        st.write("🎯 Relevance Score:", project_match["relevance_score"])
+
+        if project_match["relevance_score"] >= 0.6:
+            st.success("✅ Project highly relevant to this job!")
+        elif project_match["relevance_score"] >= 0.4:
+            st.warning("⚠️ Project somewhat relevant to this job")
+        else:
+            st.error("❌ Project has low relevance to this job")
+    else:
+        st.warning("⚠️ No project found in resume")
