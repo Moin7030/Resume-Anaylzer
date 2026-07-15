@@ -16,7 +16,7 @@ from utils import (
     semantic_skill_match,
     match_project_to_job
 )
-from llm import get_llm
+
 
 load_dotenv()
 
